@@ -3,9 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:path/path.dart';
-import 'package:taskarta/home.dart';
-import 'package:taskarta/main.dart';
 
 abstract class BaseAuth {
   Future<bool> currentUser(BuildContext context);

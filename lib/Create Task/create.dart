@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:ffi';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
@@ -66,6 +67,12 @@ class _BodyState extends State<Body> {
               text: text),
           MemberAndDate(
               entrywhom: entrywhom, pro: entryProvider, tag: tag, ids: ids),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+            child: DueDate(),
+          ),
           SizedBox(
             height: 10,
           ),
@@ -181,19 +188,7 @@ class MemberAndDate extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(top: 20, right: 10, left: 10),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: AddMember(entrywhom, pro, tag),
-          ),
-          SizedBox(
-            width: 25,
-          ),
-          /*  Expanded(
-            child: DueDate(),
-          )*/
-        ],
-      ),
+      child: AddMember(entrywhom, pro, tag),
     );
   }
 }
@@ -256,7 +251,13 @@ class _ProjectNameState extends State<ProjectName> {
                   return 'Please enter some text';
                 }
                 print(widget.tag);
-                entryProvider.changewhom = widget.tag;
+                if (widget.tag.isEmpty) {
+                  entryProvider.changewhom = [
+                    FirebaseAuth.instance.currentUser.uid
+                  ];
+                } else {
+                  entryProvider.changewhom = widget.tag;
+                }
                 entryProvider.changetitle = value;
                 return null;
               },

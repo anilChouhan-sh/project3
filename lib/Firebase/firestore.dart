@@ -35,13 +35,17 @@ class Firestore_ser {
               snapshot.docs.map((doc) => Entry.fromJson(doc.data())).toList());
   }
 
-  Stream<List<Users>> getUsers(List<dynamic> value) {
-    return _db
-        .collection('user')
-        .where("userid", whereIn: value)
-        .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => Users.fromJson(doc.data())).toList());
+  Stream<List<Users>> getUsers(List<dynamic> value, bool userflag) {
+    if (userflag == false)
+      return _db
+          .collection('user')
+          .where("userid", whereIn: value)
+          .snapshots()
+          .map((snapshot) =>
+              snapshot.docs.map((doc) => Users.fromJson(doc.data())).toList());
+    else
+      return _db.collection('user').snapshots().map((snapshot) =>
+          snapshot.docs.map((doc) => Users.fromJson(doc.data())).toList());
   }
 
 //Upsert

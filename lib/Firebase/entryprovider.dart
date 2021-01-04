@@ -16,7 +16,8 @@ class Entryprovider with ChangeNotifier {
   List<dynamic> _username;
   var uuid = Uuid();
 
-  bool _flag;
+  bool _flag, _userflag;
+
   //getters
   String get title => _title;
   String get descrition => _description;
@@ -30,15 +31,20 @@ class Entryprovider with ChangeNotifier {
   bool get flag => _flag;
   String get id => _id;
   List<dynamic> get username => _username;
+  bool get userflag => _userflag;
 
   Stream<List<Entry>> get entries =>
       firestore_ser.getEntries(collection, condition, value, flag);
 
-  Stream<List<Users>> get users => firestore_ser.getUsers(username);
+  Stream<List<Users>> get users => firestore_ser.getUsers(username, userflag);
 
   //Setters
   set changevalue(String value) {
     _value = value;
+  }
+
+  set changeuserflag(bool value) {
+    _userflag = value;
   }
 
   set changeusername(List<dynamic> username) {

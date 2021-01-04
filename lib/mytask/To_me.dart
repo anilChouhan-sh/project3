@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:taskarta/task.dart';
+import 'package:flutter/widgets.dart';
+import 'package:taskarta/mytask/task.dart';
 import 'package:provider/provider.dart';
-import 'Create Task/createtask.dart';
-import 'Firebase/entryprovider.dart';
-import 'Firebase/entry.dart';
-import 'to_me_entry.dart';
+import 'package:taskarta/Create Task/createtask.dart';
+import 'package:taskarta/Firebase/entryprovider.dart';
+import 'package:taskarta/Firebase/entry.dart';
 
-class By_me extends StatelessWidget {
-  final userid, name;
-  By_me({this.userid, this.name});
+class To_me extends StatelessWidget {
+  final String userid, name;
+  To_me({this.userid, this.name});
 
   Stream xyz(entryProvider) {
     entryProvider.changevalue = userid;
-    entryProvider.changeflag = false;
-    entryProvider.changecondition = 'userid';
+    entryProvider.changeflag = true;
+    entryProvider.changecondition = 'whom';
     entryProvider.changecollection = 'task';
     return entryProvider.entries;
   }
@@ -22,13 +22,15 @@ class By_me extends StatelessWidget {
   Widget build(BuildContext context) {
     final entryProvider = Provider.of<Entryprovider>(context);
     Stream y = xyz(entryProvider);
-    ;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => CreatTask(userid: userid, name: name)));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        CreatTask(userid: userid, name: name)));
           }),
       body: StreamBuilder<List<Entry>>(
           stream: y,
@@ -36,6 +38,8 @@ class By_me extends StatelessWidget {
             if (!snapshot.hasData) {
               return Text('Loading');
             } else {
+              snapshot.data.sort(
+                  (a, b) => (a.done.toString()).compareTo(b.done.toString()));
               return ListView.builder(
                   padding:
                       EdgeInsets.only(top: 15, bottom: 0, left: 20, right: 20),
@@ -43,12 +47,9 @@ class By_me extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return Container(
                       child: GestureDetector(
-                        child: Task(
-                          data: snapshot.data[index],
-                          flag: true,
-                        ),
+                        child: Task(data: snapshot.data[index], flag: false),
                         onTap: () {
-                          print(name);
+                          print('TAPEDDDDDDDDDDHGSAKHJDKHJA');
                         },
                       ),
                     );

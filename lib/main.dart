@@ -1,15 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:path/path.dart';
 
 import 'package:taskarta/Firebase/users.dart';
+import 'package:taskarta/bottomnav.dart';
 
-import 'package:taskarta/home.dart';
+import 'package:taskarta/mytask/home.dart';
 import 'package:provider/provider.dart';
 import 'package:taskarta/rounded_button.dart';
 
@@ -77,13 +76,10 @@ class _mainscreenState extends State<mainscreen> {
     super.initState();
   }
 
+  bool obscure = true;
   @override
   Widget build(BuildContext context) {
     final entryProvider = Provider.of<Entryprovider>(context);
-    List<dynamic> displayname = [
-      FirebaseAuth.instance.currentUser.uid.toString()
-    ];
-    entryProvider.changeusername = displayname;
     if (user == null) {
       return WillPopScope(
         onWillPop: () {
@@ -105,8 +101,8 @@ class _mainscreenState extends State<mainscreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    "WELCOME TO EDU ",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    "TasKarta",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
                   ),
                   SizedBox(height: 20),
                   Padding(
@@ -126,7 +122,7 @@ class _mainscreenState extends State<mainscreen> {
                           Icons.supervised_user_circle,
                           color: Colors.teal[700],
                         ),
-                        hintText: 'Username',
+                        hintText: 'Email',
                         border: InputBorder.none,
                       ),
                     ),
@@ -142,7 +138,7 @@ class _mainscreenState extends State<mainscreen> {
                         }
                         return null;
                       },
-                      obscureText: true,
+                      obscureText: obscure,
                       controller: password,
                       cursorColor: Colors.teal[700],
                       decoration: InputDecoration(
@@ -151,8 +147,15 @@ class _mainscreenState extends State<mainscreen> {
                           Icons.lock,
                           color: Colors.teal[700],
                         ),
-                        suffixIcon: Icon(
-                          Icons.visibility,
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              obscure = !obscure;
+                            });
+                          },
+                          icon: Icon(
+                            Icons.visibility,
+                          ),
                           color: Colors.teal[700],
                         ),
                         border: InputBorder.none,
@@ -163,8 +166,8 @@ class _mainscreenState extends State<mainscreen> {
                     text: "LOGIN",
                     press: () async {
                       if (_formlogin.currentState.validate()) {
-                        String x =
-                            await auth.signIn(username.text, password.text);
+                        String x = await auth.signIn(
+                            username.text.trim(), password.text);
                         if (FirebaseAuth.instance.currentUser.emailVerified) {
                           Navigator.pushNamed(context, '/');
                         } else {
@@ -191,12 +194,15 @@ class _mainscreenState extends State<mainscreen> {
       );
     } else {
       var p = user.email;
+      List<dynamic> displayname = [
+        FirebaseAuth.instance.currentUser.uid.toString()
+      ];
+      entryProvider.changeusername = displayname;
+      entryProvider.changeuserflag = false;
       return StreamBuilder<List<Users>>(
           stream: entryProvider.users,
           builder: (context, snapshot) {
-            return Mytask(
-                userid: FirebaseAuth.instance.currentUser.uid,
-                name: snapshot.data[0].name);
+            return Bottom_nav(snapshot.data[0].name);
           });
     }
   }

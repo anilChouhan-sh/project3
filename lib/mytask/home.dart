@@ -1,14 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
+
 import 'package:taskarta/Firebase/auth.dart';
 import 'By_me.dart';
 import 'To_me.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'Firebase/entryprovider.dart';
-import 'main.dart';
 
 class Mytask extends StatefulWidget {
   final userid, name;
@@ -46,7 +41,7 @@ class _State extends State<Mytask> {
             bottom: TabBar(
               tabs: [
                 Tab(text: 'Assigned To ME'),
-                Tab(text: 'Assigned BY ME'),
+                Tab(text: 'Assigned By ME'),
               ],
             ),
           ),

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:taskarta/Firebase/entryprovider.dart';
 import 'package:provider/provider.dart';
 import 'package:taskarta/Firebase/users.dart';
@@ -21,25 +22,31 @@ class _TaskState extends State<Task> {
     final provider = Provider.of<Entryprovider>(context);
     List<dynamic> nameCondition = new List<dynamic>();
     nameCondition.add(widget.data.userid);
+    int len;
     String getNames(List<Users> user) {
       String x;
       if (widget.flag) {
         List p = user;
         x = 'To :';
         p.forEach((element) {
-          x = x + ' ' + element.name;
+          x = x + ' ' + element.name + ',';
         });
+        len = x.length - 1;
       } else {
         x = 'By : ';
         x = x + user[0].name;
+        len = x.length;
       }
+
       return x;
     }
 
     if (widget.flag) {
       provider.changeusername = widget.data.whom;
+      provider.changeuserflag = false;
     } else {
       provider.changeusername = nameCondition;
+      provider.changeuserflag = false;
     }
     print(widget.data.done.toString());
 
@@ -78,6 +85,17 @@ class _TaskState extends State<Task> {
                           child: Text(
                             widget.data.description,
                             textScaleFactor: 1.3,
+                            style: TextStyle(fontWeight: FontWeight.w400),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 9.0, bottom: 9, right: 9.0),
+                          child: Text(
+                            "Due:  " +
+                                DateFormat("EEE   dd/MM/yyyy  H:m")
+                                    .format(DateTime.parse(widget.data.date)),
+                            textScaleFactor: 1.1,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
@@ -85,9 +103,11 @@ class _TaskState extends State<Task> {
                           padding: const EdgeInsets.only(
                               left: 9.0, bottom: 9, right: 9.0),
                           child: Text(
-                            getNames(snapshot.data),
-                            textScaleFactor: 1.3,
-                            style: TextStyle(fontWeight: FontWeight.w300),
+                            getNames(snapshot.data).substring(0, len),
+                            textScaleFactor: 1.1,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                            ),
                           ),
                         ),
                       ],

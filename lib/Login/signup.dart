@@ -31,8 +31,10 @@ class _SignupScreenState extends State<SignupScreen> {
                   style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
               SizedBox(height: 20),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
                 child: TextFormField(
+                  textCapitalization: TextCapitalization.words,
                   validator: (value) {
                     if (value.isEmpty) {
                       return 'Please enter some text';
@@ -52,7 +54,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
                 child: TextFormField(
                   validator: (value) {
                     if (value.isEmpty) {
@@ -73,7 +76,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
                 child: TextFormField(
                   validator: (value) {
                     if (value.isEmpty) {
@@ -95,7 +99,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
                 child: TextFormField(
                   validator: (value) {
                     if (value.isEmpty) {
@@ -131,7 +136,10 @@ class _SignupScreenState extends State<SignupScreen> {
                   if (_formkey.currentState.validate()) {
                     User x = await auth.createUser(
                         username.text, password.text, phone.text, name.text);
-                   if(x!=null) { Navigator.pop(context);};
+                    if (x != null) {
+                      Navigator.pop(context);
+                    }
+                    ;
                   }
 
                   print('hogayaa     bhai');

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:taskarta/Firebase/entryprovider.dart';
 
 class DueDate extends StatefulWidget {
   @override
@@ -8,10 +10,19 @@ class DueDate extends StatefulWidget {
 
 class _DueDateState extends State<DueDate> {
   DateTime selectedDate = DateTime.now();
-  final DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+  TimeOfDay selectedTime = TimeOfDay.now();
+
+  String due;
 
   @override
   Widget build(BuildContext context) {
+    final entryProvider = Provider.of<Entryprovider>(context);
+    due = DateFormat("yyyy-MM-dd ").format(selectedDate) +
+        selectedTime.hour.toString() +
+        ":" +
+        selectedTime.minute.toString() +
+        ":00";
+    entryProvider.changeDate = due;
     return Container(
       child: Row(
         children: <Widget>[
@@ -23,23 +34,41 @@ class _DueDateState extends State<DueDate> {
             ),
             onPressed: () async {
               final selectedDate = await _selectdate(context);
-              if (selectedDate == null) return;
-              print(selectedDate);
-
+              if (selectedDate == null)
+                return;
+              else {
+                selectedTime = await _selecttime(context);
+                print(selectedTime);
+              }
               setState(() {
                 this.selectedDate = DateTime(
                   selectedDate.year,
                   selectedDate.month,
                   selectedDate.day,
                 );
+                this.selectedTime = TimeOfDay(
+                    hour: selectedTime.hour, minute: selectedTime.minute);
+                print(selectedDate);
+                print(selectedTime);
+
+                due = DateFormat("yyyy-MM-dd ").format(selectedDate) +
+                    selectedTime.hour.toString() +
+                    ":" +
+                    selectedTime.minute.toString() +
+                    ":00";
               });
+              entryProvider.changeDate = due;
             },
           ),
           SizedBox(
             width: 5,
           ),
           Text(
-            DateFormat("yyyy-MM-dd").format(selectedDate),
+            DateFormat("EEE   dd/MM/yyyy  ").format(selectedDate) +
+                "Time : " +
+                selectedTime.hour.toString() +
+                " : " +
+                selectedTime.minute.toString(),
             style: TextStyle(fontSize: 20),
           ),
         ],
@@ -50,8 +79,15 @@ class _DueDateState extends State<DueDate> {
   Future<DateTime> _selectdate(BuildContext context) {
     return showDatePicker(
         context: context,
-        initialDate: DateTime.now().add(Duration(seconds: 1)),
+        initialDate: DateTime.now(),
         firstDate: DateTime.now(),
-        lastDate: DateTime(2021));
+        lastDate: DateTime(2023));
+  }
+
+  Future<TimeOfDay> _selecttime(BuildContext context) {
+    return showTimePicker(
+      initialTime: TimeOfDay.now(),
+      context: context,
+    );
   }
 }

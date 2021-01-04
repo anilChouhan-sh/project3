@@ -48,6 +48,7 @@ class _CreatTaskState extends State<CreatTask> {
                   validate = false;
 
                   entryProvider.changeuserid = widget.userid;
+                  entryProvider.changedone = false;
                   entryProvider.saveEntry();
                   Navigator.pop(context);
                 }
