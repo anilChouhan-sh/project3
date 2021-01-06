@@ -1,5 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/flutter_tags.dart';
+import 'package:provider/provider.dart';
+import 'package:taskarta/Firebase/entryprovider.dart';
+import 'package:taskarta/Firebase/users.dart';
+import 'package:taskarta/projects/dialog.dart';
 
 class Create_project extends StatefulWidget {
   @override
@@ -25,8 +31,17 @@ class _Create_projectState extends State<Create_project> {
   ];
   List tag = new List();
 
+  TextEditingController _searchcontroller = new TextEditingController();
+  List<Users> allusers = new List<Users>();
+  String _search = "";
   @override
   Widget build(BuildContext context) {
+    final entryProvider = Provider.of<Entryprovider>(context);
+    List<dynamic> displayname = [
+      FirebaseAuth.instance.currentUser.uid.toString()
+    ];
+    entryProvider.changeusername = displayname;
+    entryProvider.changeuserflag = true;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -68,13 +83,14 @@ class _Create_projectState extends State<Create_project> {
                 ),
               ),
               Card(
-                elevation: 10,
-                shadowColor: Colors.teal[700],
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                margin:
-                    const EdgeInsets.symmetric(vertical: 0.0, horizontal: 50),
-                child: TextFormField(
+                  elevation: 10,
+                  shadowColor: Colors.teal[700],
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 0.0, horizontal: 50),
+                  child:
+                      /* TextFormField(
                   decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
@@ -85,8 +101,22 @@ class _Create_projectState extends State<Create_project> {
                           borderRadius: BorderRadius.all(Radius.circular(20))),
                       hintText: 'Add Members',
                       fillColor: Colors.teal[50]),
-                ),
-              ),
+                ),*/
+                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                    IconButton(
+                      icon: Icon(Icons.search),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                                title: Text("select"),
+                                content: Dialogcontains());
+                          },
+                        );
+                      },
+                    )
+                  ])),
               SizedBox(
                 height: 20,
               ),

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:taskarta/Create%20Task/createtask.dart';
 import 'package:taskarta/mytask/home.dart';
 import 'package:taskarta/projects/Homepage.dart';
 
@@ -26,111 +27,41 @@ class _Bottom_navState extends State<Bottom_nav> {
 
   List<Widget> _buildScreens() {
     return [
+      Homepage(),
       Mytask(userid: FirebaseAuth.instance.currentUser.uid, name: widget.name),
-      Homepage()
     ];
   }
 
   BuildContext testContext;
-  List<PersistentBottomNavBarItem> _navBarsItems() {
+  List<BottomNavigationBarItem> _items() {
     return [
-      PersistentBottomNavBarItem(
-        icon: Icon(
-          Icons.home,
-        ),
-        activeColorAlternate: Colors.white,
-        title: "Home",
-        activeColor: Colors.teal[700],
-        inactiveColor: Colors.teal,
-      ),
-      PersistentBottomNavBarItem(
-        icon: Icon(Icons.settings),
-        activeColorAlternate: Colors.white,
-        title: "Settings",
-        activeColor: Colors.teal[700],
-        inactiveColor: Colors.teal,
-      ),
+      BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Mytasks',
+          activeIcon: Container(
+            width: 5,
+            height: 2,
+            color: Colors.blue,
+          )),
+      BottomNavigationBarItem(
+          icon: Icon(CupertinoIcons.table_badge_more), label: 'Mytasks')
     ];
   }
 
+  int _currentIndex = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Navigation Bar Demo')),
-      drawer: Drawer(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text('This is the Drawer'),
-            ],
-          ),
-        ),
-      ),
-      body: PersistentTabView(
-        context,
-        controller: _controller,
-        screens: _buildScreens(),
-        items: _navBarsItems(),
-        confineInSafeArea: true,
-        backgroundColor: Colors.white,
-        handleAndroidBackButtonPress: true,
-        resizeToAvoidBottomInset: true,
-        stateManagement: true,
-        navBarHeight: MediaQuery.of(context).viewInsets.bottom > 0
-            ? 0.0
-            : kBottomNavigationBarHeight,
-        hideNavigationBarWhenKeyboardShows: true,
-        margin: EdgeInsets.all(10.0),
-        popActionScreens: PopActionScreensType.once,
-        bottomScreenMargin: 0.0,
-        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: '/',
-          routes: {
-            '/first': (context) => Mytask(
-                userid: FirebaseAuth.instance.currentUser.uid,
-                name: widget.name),
-            '/second': (context) => Homepage(),
-          },
-        ),
-        onWillPop: () async {
-          await showDialog(
-            context: context,
-            useSafeArea: true,
-            builder: (context) => Container(
-              height: 50.0,
-              width: 50.0,
-              color: Colors.white,
-              child: RaisedButton(
-                child: Text("Close"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          );
-          return false;
+      body: _buildScreens()[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        items: _items(),
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
         },
-        selectedTabScreenContext: (context) {
-          testContext = context;
-        },
-        hideNavigationBar: _hideNavBar,
-        decoration: NavBarDecoration(
-            colorBehindNavBar: Colors.indigo,
-            borderRadius: BorderRadius.circular(20.0)),
-        popAllScreensOnTapOfSelectedTab: true,
-        itemAnimationProperties: ItemAnimationProperties(
-          duration: Duration(milliseconds: 400),
-          curve: Curves.ease,
-        ),
-        screenTransitionAnimation: ScreenTransitionAnimation(
-          animateTabTransition: true,
-          curve: Curves.ease,
-          duration: Duration(milliseconds: 200),
-        ),
-
-        navBarStyle:
-            NavBarStyle.style7, // Choose the nav bar style with this property
+        currentIndex: _currentIndex,
+        selectedItemColor: Colors.teal[700],
       ),
     );
   }
