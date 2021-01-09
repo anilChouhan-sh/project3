@@ -1,14 +1,22 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:provider/provider.dart';
+import 'package:taskarta/Firebase/entry.dart';
+
 import 'package:taskarta/Firebase/entryprovider.dart';
+import 'package:taskarta/Firebase/projectProvider.dart';
+import 'package:taskarta/Firebase/projects.dart';
+
 import 'package:taskarta/Firebase/users.dart';
-import './project.dart';
-import 'create_project.dart';
 
 class Dialogcontains extends StatefulWidget {
+  final List<String> tag;
+  List<Item> tags;
+  Dialogcontains(this.tag, this.tags);
   @override
   _DialogcontainsState createState() => _DialogcontainsState();
 }
@@ -18,18 +26,22 @@ class _DialogcontainsState extends State<Dialogcontains> {
   TextEditingController _searchcontroller = new TextEditingController();
   List<Users> allusers = new List<Users>();
   List<Users> _selectedusers = new List<Users>();
-  List<Item> tags = new List<Item>();
-  String _search = "";
 
-  void _addTotags(Users user) {
-    tags.add(Item(title: '${user.name}'));
-  }
+  String _search = "";
 
   @override
   Widget build(BuildContext context) {
     final entryProvider = Provider.of<Entryprovider>(context);
+    final proProvider = Provider.of<ProjectProvider>(context);
+    ProjectProvider p = new ProjectProvider();
     entryProvider.changeuserflag = true;
     _selectedusers.clear();
+    bool closed = false;
+    setState(() {
+      closed = false;
+      entryProvider.changeuserflag = true;
+    });
+    List px = new List();
     return Container(
       height: 450,
       width: 600,
@@ -40,6 +52,15 @@ class _DialogcontainsState extends State<Dialogcontains> {
               if (!snapshot.hasData) {
                 return Text("Loading");
               }
+              // List<dynamic> x = snapshot.data[0].members;
+              // x.forEach((z) {
+              //   Stream y = z.snapshots().map((doc) {
+              //     var temp = Users.fromJson(doc.data());
+              //     px.add(temp);
+              //     return temp;
+              //   });
+              // });
+              // return Text('dsf');
               allusers.clear();
               snapshot.data.forEach((data) {
                 if (data.name.toLowerCase().contains(_search.toLowerCase())) {
@@ -72,9 +93,20 @@ class _DialogcontainsState extends State<Dialogcontains> {
                           onTap: () {
                             _selectedusers.add(allusers[index]);
                             setState(() {
-                              _addTotags(allusers[index]);
+                              if (index != null) {
+                                snapshot.data.forEach((element) {
+                                  if (element.name == allusers[index].name &&
+                                      !widget.tag.contains(element.userid) &&
+                                      !closed) {
+                                    widget.tag.add(element.userid);
+                                    widget.tags.add(Item(
+                                        title:
+                                            allusers[index].name.toString()));
+                                  }
+                                });
+                              }
                             });
-                            print("${_selectedusers.toString()}");
+                            print("${widget.tag.toString()}");
                           },
                         );
                       },
@@ -92,10 +124,10 @@ class _DialogcontainsState extends State<Dialogcontains> {
                     child: SingleChildScrollView(
                       child: Tags(
                         key: _globalkey,
-                        itemCount: tags.length,
+                        itemCount: widget.tags.length,
                         columns: 5,
                         itemBuilder: (index) {
-                          final Item current = tags[index];
+                          final Item current = widget.tags[index];
                           return ItemTags(
                             pressEnabled: false,
                             index: index,
@@ -107,8 +139,8 @@ class _DialogcontainsState extends State<Dialogcontains> {
                             combine: ItemTagsCombine.imageOrIconOrText,
                             removeButton: ItemTagsRemoveButton(onRemoved: () {
                               setState(() {
-                                // tag.removeAt(index);
-                                tags.removeAt(index);
+                                widget.tag.removeAt(index);
+                                widget.tags.removeAt(index);
                               });
                               return true;
                             }),
@@ -120,7 +152,7 @@ class _DialogcontainsState extends State<Dialogcontains> {
                   RaisedButton(
                     onPressed: () {
                       _searchcontroller.clear();
-
+                      proProvider.changeNum = widget.tag.length.toString();
                       allusers.clear();
                       Navigator.pop(context);
                     },

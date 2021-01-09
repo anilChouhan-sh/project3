@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:taskarta/Firebase/projects.dart';
 
-class Project extends StatelessWidget {
+class Show_Project extends StatelessWidget {
+  Projects project;
+  Show_Project(this.project);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,25 +31,27 @@ class Project extends StatelessWidget {
                     percent: 0.4,
                     progressColor: Colors.indigoAccent[400],
                   )),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(height: 25),
-                  Text("3 Tasks",
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                  Text("Project Name",
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
-                      )),
-                  Text("Start date",
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.4),
-                      ))
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: 25),
+                    Text("Tasks - " + project.tasks.length.toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                        )),
+                    Text(project.project_name,
+                        style: TextStyle(
+                          fontSize: 30,
+                          color: Colors.white,
+                        )),
+                    Text("Date" + project.start_date,
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.4),
+                        ))
+                  ],
+                ),
               ),
               Container(
                 padding: EdgeInsets.only(top: 30, left: 45),

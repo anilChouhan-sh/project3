@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:taskarta/Firebase/projects.dart';
 import 'package:taskarta/Firebase/users.dart';
+import 'package:taskarta/projects/project.dart';
 import 'package:uuid/uuid.dart';
 import './entry.dart';
 
@@ -19,7 +21,7 @@ class Firestore_ser {
 
   Stream<List<Entry>> getEntries(
       String collection, String condition, String value, bool flag) {
-    if (flag == false)
+    if (flag == true)
       return _db
           .collection(collection)
           .where(condition, isEqualTo: value)
@@ -48,11 +50,24 @@ class Firestore_ser {
           snapshot.docs.map((doc) => Users.fromJson(doc.data())).toList());
   }
 
-//Upsert
-  Future<void> setEntry(Entry entry) {
-    var options = SetOptions(merge: true);
+  Stream<List<Projects>> getProjects() {
+    return _db.collection('projects').snapshots().map((snapshot) =>
+        snapshot.docs.map((doc) => Projects.fromJson(doc.data())).toList());
+  }
 
-    return _db.collection('task').doc(entry.id).set(entry.toMap(), options);
+//Upsert
+  Future<void> setEntry(dynamic entry, String collection) {
+    var options = SetOptions(merge: true);
+    if (collection == 'task')
+      return _db
+          .collection(collection)
+          .doc(entry.id)
+          .set(entry.toMap(), options);
+    else
+      return _db
+          .collection(collection)
+          .doc(entry.projectID)
+          .set(entry.toMap(), options);
   }
 
   //Delete

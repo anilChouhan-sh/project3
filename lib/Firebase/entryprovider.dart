@@ -11,6 +11,8 @@ class Entryprovider with ChangeNotifier {
   final firestore_ser = Firestore_ser();
   var _whom;
   String _title, _description, _date, _userid, _condition, _value, _collection;
+
+  Users _currentUser;
   bool _done;
   String _id;
   List<dynamic> _username;
@@ -30,6 +32,7 @@ class Entryprovider with ChangeNotifier {
   bool get done => _done;
   bool get flag => _flag;
   String get id => _id;
+  Users get currentUser => _currentUser;
   List<dynamic> get username => _username;
   bool get userflag => _userflag;
 
@@ -98,6 +101,11 @@ class Entryprovider with ChangeNotifier {
     notifyListeners();
   }
 
+  set changeCurrentUser(Users name) {
+    _currentUser = name;
+    notifyListeners();
+  }
+
   //Functions
   loadAll(Entry entry) {
     if (entry != null) {
@@ -131,7 +139,7 @@ class Entryprovider with ChangeNotifier {
           userid: _userid,
           done: _done);
       print(newEntry.title);
-      firestore_ser.setEntry(newEntry);
+      firestore_ser.setEntry(newEntry, 'task');
     } else {
       //Edit
       var updatedEntry = Entry(
@@ -142,7 +150,7 @@ class Entryprovider with ChangeNotifier {
           whom: _whom,
           userid: _userid,
           done: _done);
-      firestore_ser.setEntry(updatedEntry);
+      firestore_ser.setEntry(updatedEntry, 'task');
     }
   }
 

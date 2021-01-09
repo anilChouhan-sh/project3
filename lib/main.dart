@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:taskarta/Firebase/projectProvider.dart';
 
 import 'package:taskarta/Firebase/users.dart';
 import 'package:taskarta/bottomnav.dart';
@@ -28,8 +29,19 @@ class LoginScrn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     GlobalKey<NavigatorState> f = new GlobalKey();
-    return ChangeNotifierProvider(
-      create: (context) => Entryprovider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) {
+            return Entryprovider();
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (context) {
+            return ProjectProvider();
+          },
+        )
+      ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           initialRoute: '/',
@@ -197,11 +209,13 @@ class _mainscreenState extends State<mainscreen> {
       List<dynamic> displayname = [
         FirebaseAuth.instance.currentUser.uid.toString()
       ];
+
       entryProvider.changeusername = displayname;
       entryProvider.changeuserflag = false;
       return StreamBuilder<List<Users>>(
           stream: entryProvider.users,
           builder: (context, snapshot) {
+            entryProvider.changeCurrentUser = snapshot.data[0];
             return Bottom_nav(snapshot.data[0].name);
           });
     }

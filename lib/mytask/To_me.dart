@@ -8,20 +8,32 @@ import 'package:taskarta/Firebase/entryprovider.dart';
 import 'package:taskarta/Firebase/entry.dart';
 
 class To_me extends StatelessWidget {
-  final String userid, name;
-  To_me({this.userid, this.name});
+  final String userid, name, condition, collection;
+  bool flag;
+  To_me({this.userid, this.name, this.collection, this.condition});
 
-  Stream xyz(entryProvider) {
-    entryProvider.changevalue = userid;
-    entryProvider.changeflag = true;
-    entryProvider.changecondition = 'whom';
-    entryProvider.changecollection = 'task';
-    return entryProvider.entries;
-  }
+  // Stream xyz(entryProvider) {
+  //   condition == 'whom' ? flag = false : flag = true;
+  //   entryProvider.changevalue = userid;
+  //   entryProvider.changeflag = false;
+  //   entryProvider.changecondition = condition;
+  //   entryProvider.changecollection = collection;
+  //   condition == 'whom' ? flag = false : flag = true;
+  //   return entryProvider.entries;
+  // }
 
   @override
   Widget build(BuildContext context) {
     final entryProvider = Provider.of<Entryprovider>(context);
+    Stream xyz(entryProvider) {
+      condition == 'whom' ? flag = false : flag = true;
+      entryProvider.changevalue = userid;
+      entryProvider.changeflag = flag;
+      entryProvider.changecondition = condition;
+      entryProvider.changecollection = collection;
+
+      return entryProvider.entries;
+    }
 
     Stream y = xyz(entryProvider);
     return Scaffold(
@@ -50,7 +62,7 @@ class To_me extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return Container(
                       child: GestureDetector(
-                        child: Task(data: snapshot.data[index], flag: false),
+                        child: Task(data: snapshot.data[index], flag: flag),
                         onTap: () {
                           print('TAPEDDDDDDDDDDHGSAKHJDKHJA');
                         },

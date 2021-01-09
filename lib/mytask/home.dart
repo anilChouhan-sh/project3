@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import 'package:taskarta/Firebase/auth.dart';
+import 'package:taskarta/Firebase/entryprovider.dart';
+import 'package:taskarta/mytask/task.dart';
 import 'By_me.dart';
 import 'To_me.dart';
 
@@ -21,7 +24,7 @@ class _State extends State<Mytask> {
 
   @override
   Widget build(BuildContext context) {
-    print("$userid  $name");
+    final entryProvider = Provider.of<Entryprovider>(context);
     return WillPopScope(
       onWillPop: () {
         SystemNavigator.pop();
@@ -38,7 +41,10 @@ class _State extends State<Mytask> {
                 Navigator.pushNamed(context, '/');
               },
             ),
-            title: Text('$name \' s Tasks'),
+            title:
+                Consumer<Entryprovider>(builder: (context, entryProvider, _) {
+              return Text('${entryProvider.currentUser.name} \' s Tasks');
+            }),
             backgroundColor: Colors.teal[700],
             bottom: TabBar(
               tabs: [
@@ -49,8 +55,16 @@ class _State extends State<Mytask> {
           ),
           body: TabBarView(
             children: [
-              To_me(userid: userid, name: name),
-              By_me(userid: userid, name: name),
+              To_me(
+                  userid: userid,
+                  name: name,
+                  condition: 'whom',
+                  collection: 'task'),
+              To_me(
+                  userid: userid,
+                  name: name,
+                  condition: 'userid',
+                  collection: 'task'),
             ],
           ),
         ),
