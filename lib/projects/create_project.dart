@@ -127,10 +127,7 @@ class _Create_ProjectState extends State<Create_Project> {
                   print(projectProvider.members);
                   projectProvider.saveEntry();
 
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ProjectDetails()));
+                  Navigator.pop(context);
                 },
                 color: Colors.teal[700],
                 shape: RoundedRectangleBorder(

@@ -27,14 +27,14 @@ class By_me extends StatelessWidget {
     final projectProvider = Provider.of<ProjectProvider>(context);
     Stream y = xyz(entryProvider);
 
-    projectProvider.currentProject.tasks.forEach((z) async {
-      print(z);
-      Stream y = await z.snapshots().map((doc) => Entry.fromJson(doc.data()));
-      y.listen((x) {
-        tempL.add(x);
-        print("inside stream ${x.title}");
-      });
-    });
+    // projectProvider.currentProject.tasks.forEach((z) async {
+    //   print(z);
+    //   Stream y = await z.snapshots().map((doc) => Entry.fromJson(doc.data()));
+    //   y.listen((x) {
+    //     tempL.add(x);
+    //     print("inside stream ${x.title}");
+    //   });
+    // });
     // Stream xp = projectProvider.currentProject.tasks[0]
     //     .snapshots()
     //     .map((doc) => Entry.fromJson(doc.data()));
@@ -43,7 +43,7 @@ class By_me extends StatelessWidget {
     //   tempL.add(x);
     //   print("inside stream ${x.title}");
     // });
-    print("is it empty $tempL");
+    // print("is it empty $tempL");
     return Scaffold(
         floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add),
@@ -51,21 +51,23 @@ class By_me extends StatelessWidget {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => CreatTask(userid: userid, name: name)));
             }),
-        body: ListView.builder(
-            padding: EdgeInsets.only(top: 15, bottom: 0, left: 20, right: 20),
-            itemCount: tempL.length,
-            itemBuilder: (context, index) {
-              return Container(
-                child: GestureDetector(
-                  child: Task(
-                    data: tempL[0],
-                    flag: true,
+        body: Consumer<ProjectProvider>(
+          builder: (context, projectProvider, _) => ListView.builder(
+              padding: EdgeInsets.only(top: 15, bottom: 0, left: 20, right: 20),
+              itemCount: projectProvider.curr_tasks?.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  child: GestureDetector(
+                    child: Task(
+                      data: projectProvider.curr_tasks[index],
+                      flag: true,
+                    ),
+                    onTap: () {
+                      print(name);
+                    },
                   ),
-                  onTap: () {
-                    print(name);
-                  },
-                ),
-              );
-            }));
+                );
+              }),
+        ));
   }
 }

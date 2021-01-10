@@ -159,10 +159,9 @@ class Homepage extends StatelessWidget {
                               onTap: () {
                                 projectProvider.changecurrentProject =
                                     snapshot.data[index];
-
                                 projectProvider.changecurr_tasks =
                                     snapshot.data[index].tasks;
-                                print(snapshot.data[index].members);
+                             
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(

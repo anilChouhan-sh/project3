@@ -42,11 +42,9 @@ class _ProjectDetailsState extends State<ProjectDetails> {
         ),
         body: TabBarView(
           children: [
-            Consumer<ProjectProvider>(
-              builder: (context, projectProvider, _) => By_me(
-                userid: entryprovider.currentUser.userid,
-                name: entryprovider.currentUser.name,
-              ),
+            By_me(
+              userid: entryprovider.currentUser.userid,
+              name: entryprovider.currentUser.name,
             ),
             To_me(
                 userid: 'fdg',

@@ -17,7 +17,7 @@ class ProjectProvider with ChangeNotifier {
   dynamic _tasks;
   String _projectID;
   Projects _currentProject;
-  List<Entry> _curr_tasks;
+  List<Entry> _curr_tasks = [];
 
   //getters
   List<Entry> get curr_tasks => _curr_tasks;
@@ -39,19 +39,29 @@ class ProjectProvider with ChangeNotifier {
   }
 
   set changecurr_tasks(List st) {
+    _curr_tasks?.clear();
+    tempL?.clear();
     print('insidepro $st');
-    // st.forEach((z) {
-    //   print("tp");
-    //   Stream y = z.snapshots().map((doc) {
-    //     Entry temp = Entry.fromJson(doc.data());
-    //     tempL.add(temp);
-    //     print('inside ');
-    //     return temp;
-    //   });
-    // });
-    print('insidess $tempL');
-    _curr_tasks = tempL;
-    notifyListeners();
+    st.forEach((z) {
+      print(z);
+      Stream y = z.snapshots().map((doc) => Entry.fromJson(doc.data()));
+      y.listen((x) {
+        int index = _curr_tasks.indexWhere((t) {
+          return t.title == x.title;
+        });
+
+        if (index == -1) {
+          _curr_tasks.add(x);
+        } else {
+          _curr_tasks[index] = x;
+        }
+        print("inside stream ${x.title}");
+        notifyListeners();
+      });
+    });
+    // print('insidess $_curr_tasks');
+    //_curr_tasks = tempL;
+    print('insidess $_curr_tasks');
   }
 
   set changeProject_name(String name) {
