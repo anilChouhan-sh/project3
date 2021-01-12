@@ -57,7 +57,38 @@ class By_me extends StatelessWidget {
               itemCount: projectProvider.curr_tasks?.length,
               itemBuilder: (context, index) {
                 return Container(
-                  child: GestureDetector(
+                  child: InkWell(
+                    highlightColor: Colors.teal[700],
+                    onLongPress: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: Text(
+                                  "Are you sure you want to delete task : -${projectProvider.curr_tasks[index].title}?"),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text(
+                                    "Cancel",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                FlatButton(
+                                  child: Text(
+                                    "Delete",
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          });
+                    },
                     child: Task(
                       data: projectProvider.curr_tasks[index],
                       flag: true,

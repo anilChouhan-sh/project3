@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:taskarta/Create%20Task/createtask.dart';
 import 'package:taskarta/mytask/home.dart';
@@ -47,17 +48,23 @@ class _Bottom_navState extends State<Bottom_nav> {
   int _currentIndex = 1;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildScreens()[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        items: _items(),
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        currentIndex: _currentIndex,
-        selectedItemColor: Colors.teal[700],
+    return WillPopScope(
+      onWillPop: () {
+        SystemNavigator.pop();
+        return;
+      },
+      child: Scaffold(
+        body: _buildScreens()[_currentIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          items: _items(),
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          currentIndex: _currentIndex,
+          selectedItemColor: Colors.teal[700],
+        ),
       ),
     );
   }

@@ -35,10 +35,14 @@ class _DialogcontainsState extends State<Dialogcontains> {
     entryProvider.changeuserflag = true;
     _selectedusers.clear();
     bool closed = false;
-    setState(() {
-      closed = false;
-      entryProvider.changeuserflag = true;
-    });
+
+    if (!widget.tag.contains(entryProvider.currentUser.userid)) {
+      widget.tag.add(entryProvider.currentUser.userid);
+      widget.tags.add(Item(title: entryProvider.currentUser.name.toString()));
+    }
+
+    closed = false;
+    entryProvider.changeuserflag = true;
 
     return Container(
       height: 450,

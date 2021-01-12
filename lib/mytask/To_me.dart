@@ -66,7 +66,39 @@ class To_me extends StatelessWidget {
                   itemCount: snapshot.data.length,
                   itemBuilder: (context, index) {
                     return Container(
-                      child: GestureDetector(
+                      child: InkWell(
+                        onLongPress: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Text(
+                                      "Are you sure you want to delete task : -${snapshot.data[index].title}?"),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    FlatButton(
+                                      child: Text(
+                                        "Delete",
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
+                        },
+                        splashColor: Colors.teal[700],
+                        highlightColor: Colors.teal[700],
                         child: Task(data: snapshot.data[index], flag: flag),
                         onTap: () {
                           print('TAPEDDDDDDDDDDHGSAKHJDKHJA');

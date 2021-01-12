@@ -44,18 +44,20 @@ class Firestore_ser {
           .collection('user')
           .where("userid", whereIn: value)
           .snapshots()
-          .map((snapshot) =>
-              snapshot.docs.map((doc) => Users.fromJson(doc.data())).toList());
+          .map((snapshot) => snapshot.docs
+              .map((doc) => Users.fromJson(doc.data(), doc.reference))
+              .toList());
     else
-      return _db.collection('user').snapshots().map((snapshot) =>
-          snapshot.docs.map((doc) => Users.fromJson(doc.data())).toList());
+      return _db.collection('user').snapshots().map((snapshot) => snapshot.docs
+          .map((doc) => Users.fromJson(doc.data(), doc.reference))
+          .toList());
   }
 
   Stream<List<Projects>> getProjects() {
     return _db
         .collection('projects')
-        .where("created_by",
-            isEqualTo: FirebaseFirestore.instance
+        .where("members",
+            arrayContains: FirebaseFirestore.instance
                 .collection('user')
                 .doc(FirebaseAuth.instance.currentUser.uid))
         .snapshots()

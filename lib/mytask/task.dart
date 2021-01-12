@@ -55,100 +55,98 @@ class _TaskState extends State<Task> {
       stream: provider.users,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Container(
-            child: Card(
-              color: widget.data.done == true ? Colors.teal[300] : Colors.white,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 10,
+          return Card(
+            color: widget.data.done == true ? Colors.teal[300] : Colors.white,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 9.0),
+                        child: Text(
+                          widget.data.title,
+                          textScaleFactor: 2,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 9.0),
-                          child: Text(
-                            widget.data.title,
-                            textScaleFactor: 2,
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 9.0, bottom: 9, right: 9.0),
+                        child: Text(
+                          widget.data.description,
+                          textScaleFactor: 1.3,
+                          style: TextStyle(fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 9.0, bottom: 9, right: 9.0),
+                        child: Text(
+                          "Due:  " +
+                              DateFormat("EEE   dd/MM/yyyy  H:m")
+                                  .format(DateTime.parse(widget.data.date)),
+                          textScaleFactor: 1.1,
+                          style: TextStyle(fontWeight: FontWeight.w300),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 9.0, bottom: 9, right: 9.0),
+                        child: Text(
+                          getNames(snapshot.data).substring(0, len),
+                          textScaleFactor: 1.1,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w300,
                           ),
                         ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 9.0, bottom: 9, right: 9.0),
-                          child: Text(
-                            widget.data.description,
-                            textScaleFactor: 1.3,
-                            style: TextStyle(fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 9.0, bottom: 9, right: 9.0),
-                          child: Text(
-                            "Due:  " +
-                                DateFormat("EEE   dd/MM/yyyy  H:m")
-                                    .format(DateTime.parse(widget.data.date)),
-                            textScaleFactor: 1.1,
-                            style: TextStyle(fontWeight: FontWeight.w300),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 9.0, bottom: 9, right: 9.0),
-                          child: Text(
-                            getNames(snapshot.data).substring(0, len),
-                            textScaleFactor: 1.1,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  widget.flag == false
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Checkbox(
-                                value: widget.data.done,
-                                tristate: true,
-                                activeColor: Colors.teal[700],
-                                /*  icon: Icon(
-                          widget.data.done == true ? Icons.undo : Icons.done),*/
-                                onChanged: (bool value) {
-                                  setState(() {
-                                    if (widget.data.done == false) {
-                                      provider.loadAll(widget.data);
-                                      provider.changeid = widget.data.id;
-                                      provider.changedone = true;
-                                      provider.saveEntry();
-                                    } else {
-                                      provider.loadAll(widget.data);
-                                      provider.changeid = widget.data.id;
-                                      provider.changedone = false;
-                                      provider.saveEntry();
-                                    }
-                                  });
-                                },
-                              ),
-                            )
-                          ],
-                        )
-                      : Column()
-                ],
-              ),
+                ),
+                widget.flag == false
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Checkbox(
+                              value: widget.data.done,
+                              tristate: true,
+                              activeColor: Colors.teal[700],
+                              /*  icon: Icon(
+                        widget.data.done == true ? Icons.undo : Icons.done),*/
+                              onChanged: (bool value) {
+                                setState(() {
+                                  if (widget.data.done == false) {
+                                    provider.loadAll(widget.data);
+                                    provider.changeid = widget.data.id;
+                                    provider.changedone = true;
+                                    provider.saveEntry();
+                                  } else {
+                                    provider.loadAll(widget.data);
+                                    provider.changeid = widget.data.id;
+                                    provider.changedone = false;
+                                    provider.saveEntry();
+                                  }
+                                });
+                              },
+                            ),
+                          )
+                        ],
+                      )
+                    : Column()
+              ],
             ),
           );
         } else {
