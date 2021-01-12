@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:provider/provider.dart';
+import 'package:taskarta/Firebase/projectProvider.dart';
 import 'package:taskarta/Firebase/projects.dart';
 
 class Show_Project extends StatelessWidget {
@@ -9,6 +11,7 @@ class Show_Project extends StatelessWidget {
   Show_Project(this.project);
   @override
   Widget build(BuildContext context) {
+    final projectProvider = Provider.of<ProjectProvider>(context);
     return Container(
       height: 130,
       child: Card(
@@ -23,6 +26,8 @@ class Show_Project extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
+                  //  color: Colors.white,
+
                   padding:
                       EdgeInsets.only(top: 32, left: 20, right: 10, bottom: 25),
                   child: CircularPercentIndicator(
@@ -53,13 +58,45 @@ class Show_Project extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                padding: EdgeInsets.only(top: 30, left: 45),
-                child: IconButton(
-                  onPressed: () {},
-                  icon: Icon(CupertinoIcons.ellipsis_vertical),
-                  iconSize: 35,
-                ),
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      CupertinoIcons.circle_filled,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Container(
+                    //  padding: EdgeInsets.only(top: 30, left: 45),
+                    child: IconButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            child: AlertDialog(
+                              title: Text('Options'),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ListTile(
+                                    title: Text('Delete'),
+                                    onTap: () {
+                                      projectProvider.deleteProject(
+                                          project.projectID, 'projects');
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ));
+                      },
+                      icon: Icon(
+                        CupertinoIcons.ellipsis_vertical,
+                      ),
+                      iconSize: 35,
+                    ),
+                  ),
+                ],
               )
             ],
           )),

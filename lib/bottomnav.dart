@@ -36,15 +36,11 @@ class _Bottom_navState extends State<Bottom_nav> {
   List<BottomNavigationBarItem> _items() {
     return [
       BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Mytasks',
-          activeIcon: Container(
-            width: 5,
-            height: 2,
-            color: Colors.blue,
-          )),
+        icon: Icon(Icons.home),
+        label: 'Home',
+      ),
       BottomNavigationBarItem(
-          icon: Icon(CupertinoIcons.table_badge_more), label: 'Mytasks')
+          icon: Icon(CupertinoIcons.table_badge_more), label: 'MyTasks')
     ];
   }
 

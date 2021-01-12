@@ -154,7 +154,7 @@ class Entryprovider with ChangeNotifier {
     }
   }
 
-  removeEntry(String entryId) {
-    firestore_ser.removeEntry(entryId);
+  removeEntry(String entryId, String collection) {
+    firestore_ser.removeEntry(entryId, collection);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animations/loading_animations.dart';
 import 'package:provider/provider.dart';
 import 'package:taskarta/Firebase/entryprovider.dart';
 
@@ -9,7 +10,7 @@ import 'package:taskarta/projects/create_project.dart';
 import 'package:taskarta/projects/projectDetails.dart';
 import 'package:taskarta/projects/safeus.dart';
 import 'package:flutter_tags/flutter_tags.dart';
-import './project.dart';
+import './projectcard.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class Homepage extends StatelessWidget {
@@ -148,7 +149,11 @@ class Homepage extends StatelessWidget {
                     stream: projectProvider.projects,
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
-                        return Text('Loading');
+                        return Center(
+                          child: LoadingBumpingLine.circle(
+                            borderColor: Colors.teal[700],
+                          ),
+                        );
                       }
                       return ListView.builder(
                         itemCount: snapshot.data.length,
@@ -161,7 +166,7 @@ class Homepage extends StatelessWidget {
                                     snapshot.data[index];
                                 projectProvider.changecurr_tasks =
                                     snapshot.data[index].tasks;
-                             
+
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(

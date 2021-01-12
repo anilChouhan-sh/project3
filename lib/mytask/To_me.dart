@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:loading_animations/loading_animations.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:taskarta/mytask/task.dart';
 import 'package:provider/provider.dart';
@@ -51,7 +52,11 @@ class To_me extends StatelessWidget {
           stream: y,
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return Text('Loading');
+              return Center(
+                child: LoadingBumpingLine.circle(
+                  borderColor: Colors.teal[700],
+                ),
+              );
             } else {
               snapshot.data.sort(
                   (a, b) => (a.done.toString()).compareTo(b.done.toString()));

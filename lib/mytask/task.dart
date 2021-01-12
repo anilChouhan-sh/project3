@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animations/loading_animations.dart';
 import 'package:taskarta/Firebase/entryprovider.dart';
 import 'package:provider/provider.dart';
 import 'package:taskarta/Firebase/users.dart';
@@ -151,7 +152,11 @@ class _TaskState extends State<Task> {
             ),
           );
         } else {
-          return Text('Loading');
+          return Center(
+            child: LoadingBumpingLine.circle(
+              borderColor: Colors.teal[700],
+            ),
+          );
         }
       },
     );

@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:taskarta/Firebase/projects.dart';
 import 'package:taskarta/Firebase/users.dart';
-import 'package:taskarta/projects/project.dart';
+import 'package:taskarta/projects/projectcard.dart';
 import 'package:uuid/uuid.dart';
 import './entry.dart';
 
@@ -51,8 +52,15 @@ class Firestore_ser {
   }
 
   Stream<List<Projects>> getProjects() {
-    return _db.collection('projects').snapshots().map((snapshot) =>
-        snapshot.docs.map((doc) => Projects.fromJson(doc.data())).toList());
+    return _db
+        .collection('projects')
+        .where("created_by",
+            isEqualTo: FirebaseFirestore.instance
+                .collection('user')
+                .doc(FirebaseAuth.instance.currentUser.uid))
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Projects.fromJson(doc.data())).toList());
   }
 
 //Upsert
@@ -71,7 +79,7 @@ class Firestore_ser {
   }
 
   //Delete
-  Future<void> removeEntry(String entryId) {
-    return _db.collection('task').doc(entryId).delete();
+  Future<void> removeEntry(String entryId, String collection) {
+    return _db.collection(collection).doc(entryId).delete();
   }
 }

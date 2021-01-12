@@ -5,11 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:provider/provider.dart';
-import 'package:taskarta/Firebase/entry.dart';
 
 import 'package:taskarta/Firebase/entryprovider.dart';
 import 'package:taskarta/Firebase/projectProvider.dart';
-import 'package:taskarta/Firebase/projects.dart';
 
 import 'package:taskarta/Firebase/users.dart';
 
@@ -41,7 +39,7 @@ class _DialogcontainsState extends State<Dialogcontains> {
       closed = false;
       entryProvider.changeuserflag = true;
     });
-    List px = new List();
+
     return Container(
       height: 450,
       width: 600,
@@ -52,15 +50,7 @@ class _DialogcontainsState extends State<Dialogcontains> {
               if (!snapshot.hasData) {
                 return Text("Loading");
               }
-              // List<dynamic> x = snapshot.data[0].members;
-              // x.forEach((z) {
-              //   Stream y = z.snapshots().map((doc) {
-              //     var temp = Users.fromJson(doc.data());
-              //     px.add(temp);
-              //     return temp;
-              //   });
-              // });
-              // return Text('dsf');
+
               allusers.clear();
               snapshot.data.forEach((data) {
                 if (data.name.toLowerCase().contains(_search.toLowerCase())) {

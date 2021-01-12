@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_animations/loading_animations.dart';
 import 'package:taskarta/Firebase/projectProvider.dart';
 
 import 'package:taskarta/Firebase/users.dart';
@@ -102,7 +103,7 @@ class _mainscreenState extends State<mainscreen> {
             automaticallyImplyLeading: false,
             backgroundColor: Colors.teal[700],
             title: Text(
-              'TasKarta',
+              'Taskman',
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -113,7 +114,7 @@ class _mainscreenState extends State<mainscreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    "TasKarta",
+                    "Taskman",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
                   ),
                   SizedBox(height: 20),
@@ -180,6 +181,15 @@ class _mainscreenState extends State<mainscreen> {
                       if (_formlogin.currentState.validate()) {
                         String x = await auth.signIn(
                             username.text.trim(), password.text);
+                        if (x == null) {
+                          showAboutDialog(context: context, children: [
+                            Center(
+                              child: LoadingBumpingLine.circle(
+                                borderColor: Colors.teal[700],
+                              ),
+                            )
+                          ]);
+                        }
                         if (FirebaseAuth.instance.currentUser.emailVerified) {
                           Navigator.pushNamed(context, '/');
                         } else {
@@ -215,6 +225,13 @@ class _mainscreenState extends State<mainscreen> {
       return StreamBuilder<List<Users>>(
           stream: entryProvider.users,
           builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: LoadingBumpingLine.circle(
+                  borderColor: Colors.teal[700],
+                ),
+              );
+            }
             entryProvider.changeCurrentUser = snapshot.data[0];
             return Bottom_nav(snapshot.data[0].name);
           });

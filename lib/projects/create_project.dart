@@ -125,7 +125,7 @@ class _Create_ProjectState extends State<Create_Project> {
                   projectProvider.changetasks = [];
                   print('yourrrrr valusssss${widget.tag.toString()}');
                   print(projectProvider.members);
-                  projectProvider.saveEntry();
+                  projectProvider.saveProject();
 
                   Navigator.pop(context);
                 },

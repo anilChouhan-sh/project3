@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:taskarta/Firebase/entry.dart';
 import 'package:taskarta/Firebase/firestore.dart';
 import 'package:taskarta/Firebase/projects.dart';
-import 'package:taskarta/projects/project.dart';
+import 'package:taskarta/projects/projectcard.dart';
 import 'package:uuid/uuid.dart';
 
 class ProjectProvider with ChangeNotifier {
@@ -99,7 +99,7 @@ class ProjectProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  saveEntry() {
+  saveProject() {
     if (_projectID == null) {
       //Add
       var newEntry = Projects(
@@ -122,5 +122,9 @@ class ProjectProvider with ChangeNotifier {
           projectID: _projectID);
       firestore_ser.setEntry(updatedEntry, 'projects');
     }
+  }
+
+  deleteProject(String id, String collection) {
+    firestore_ser.removeEntry(id, collection);
   }
 }
