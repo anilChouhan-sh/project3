@@ -2,23 +2,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:taskarta/Firebase/firestore.dart';
 import 'package:taskarta/Firebase/users.dart';
-import 'package:taskarta/Firebase/users.dart';
+
 import 'package:uuid/uuid.dart';
-import './firestore.dart';
-import './entry.dart';
+
+import 'package:taskarta/Firebase/entry.dart';
 
 class Entryprovider with ChangeNotifier {
   final firestore_ser = Firestore_ser();
   var _whom;
   String _title, _description, _date, _userid, _condition, _value, _collection;
 
-  Users _currentUser;
   bool _done;
   String _id;
-  List<dynamic> _username;
+
   var uuid = Uuid();
 
-  bool _flag, _userflag;
+  bool _flag;
 
   //getters
   String get title => _title;
@@ -32,26 +31,13 @@ class Entryprovider with ChangeNotifier {
   bool get done => _done;
   bool get flag => _flag;
   String get id => _id;
-  Users get currentUser => _currentUser;
-  List<dynamic> get username => _username;
-  bool get userflag => _userflag;
 
   Stream<List<Entry>> get entries =>
       firestore_ser.getEntries(collection, condition, value, flag);
 
-  Stream<List<Users>> get users => firestore_ser.getUsers(username, userflag);
-
   //Setters
   set changevalue(String value) {
     _value = value;
-  }
-
-  set changeuserflag(bool value) {
-    _userflag = value;
-  }
-
-  set changeusername(List<dynamic> username) {
-    _username = username;
   }
 
   set changeflag(bool flag) {
@@ -101,11 +87,6 @@ class Entryprovider with ChangeNotifier {
     notifyListeners();
   }
 
-  set changeCurrentUser(Users name) {
-    _currentUser = name;
-    notifyListeners();
-  }
-
   //Functions
   loadAll(Entry entry) {
     if (entry != null) {
@@ -127,19 +108,21 @@ class Entryprovider with ChangeNotifier {
     }
   }
 
-  saveEntry() {
+  String saveEntry() {
+    String id = uuid.v1();
     if (_id == null) {
       //Add
       var newEntry = Entry(
           date: _date,
           title: _title,
-          id: uuid.v1(),
+          id: id,
           description: _description,
           whom: _whom,
           userid: _userid,
           done: _done);
       print(newEntry.title);
       firestore_ser.setEntry(newEntry, 'task');
+      return id;
     } else {
       //Edit
       var updatedEntry = Entry(
@@ -152,6 +135,7 @@ class Entryprovider with ChangeNotifier {
           done: _done);
       firestore_ser.setEntry(updatedEntry, 'task');
     }
+    return "";
   }
 
   removeEntry(String entryId, String collection) {

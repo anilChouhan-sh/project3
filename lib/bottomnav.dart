@@ -3,7 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:taskarta/Create%20Task/createtask.dart';
+import 'package:provider/provider.dart';
+import 'package:taskarta/Firebase/Providers/userProviders.dart';
+
+import 'package:taskarta/contacts/button.dart';
+import 'package:taskarta/contacts/contacts.dart';
+
 import 'package:taskarta/mytask/home.dart';
 import 'package:taskarta/projects/Homepage.dart';
 
@@ -30,6 +35,7 @@ class _Bottom_navState extends State<Bottom_nav> {
     return [
       Homepage(),
       Mytask(userid: FirebaseAuth.instance.currentUser.uid, name: widget.name),
+      MyContacts()
     ];
   }
 
@@ -41,7 +47,9 @@ class _Bottom_navState extends State<Bottom_nav> {
         label: 'Home',
       ),
       BottomNavigationBarItem(
-          icon: Icon(CupertinoIcons.table_badge_more), label: 'MyTasks')
+          icon: Icon(CupertinoIcons.table_badge_more), label: 'MyTasks'),
+      BottomNavigationBarItem(
+          icon: Icon(Icons.import_contacts), label: 'MyContacts')
     ];
   }
 

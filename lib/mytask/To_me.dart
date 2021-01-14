@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:loading_animations/loading_animations.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:taskarta/mytask/task.dart';
 import 'package:provider/provider.dart';
 import 'package:taskarta/Create Task/createtask.dart';
-import 'package:taskarta/Firebase/entryprovider.dart';
+import 'package:taskarta/Firebase/Providers/entryprovider.dart';
 import 'package:taskarta/Firebase/entry.dart';
 
 class To_me extends StatelessWidget {
@@ -25,7 +24,7 @@ class To_me extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final entryProvider = Provider.of<Entryprovider>(context);
+    final entryProvider = Provider.of<Entryprovider>(context, listen: false);
     Stream xyz(entryProvider) {
       condition == 'whom' ? flag = false : flag = true;
       entryProvider.changevalue = userid;
@@ -90,6 +89,8 @@ class To_me extends StatelessWidget {
                                         style: TextStyle(color: Colors.red),
                                       ),
                                       onPressed: () {
+                                        entryProvider.removeEntry(
+                                            snapshot.data[index].id, "task");
                                         Navigator.of(context).pop();
                                       },
                                     ),

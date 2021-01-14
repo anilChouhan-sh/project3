@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_animations/loading_animations.dart';
-import 'package:taskarta/Firebase/projectProvider.dart';
+import 'package:taskarta/Firebase/Providers/projectProvider.dart';
+import 'package:taskarta/Firebase/Providers/userProviders.dart';
 
 import 'package:taskarta/Firebase/users.dart';
 import 'package:taskarta/bottomnav.dart';
@@ -15,7 +16,7 @@ import 'package:provider/provider.dart';
 import 'package:taskarta/rounded_button.dart';
 
 import 'Firebase/auth.dart';
-import 'Firebase/entryprovider.dart';
+import 'Firebase/Providers/entryprovider.dart';
 import 'Login/Login.dart';
 import 'Login/signup.dart';
 import 'package:taskarta/Firebase/auth.dart';
@@ -41,7 +42,12 @@ class LoginScrn extends StatelessWidget {
           create: (context) {
             return ProjectProvider();
           },
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (context) {
+            return UserProvider();
+          },
+        ),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -92,7 +98,7 @@ class _mainscreenState extends State<mainscreen> {
   bool obscure = true;
   @override
   Widget build(BuildContext context) {
-    final entryProvider = Provider.of<Entryprovider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
     if (user == null) {
       return WillPopScope(
         onWillPop: () {
@@ -220,10 +226,10 @@ class _mainscreenState extends State<mainscreen> {
         FirebaseAuth.instance.currentUser.uid.toString()
       ];
 
-      entryProvider.changeusername = displayname;
-      entryProvider.changeuserflag = false;
+      userProvider.changeusername = displayname;
+      userProvider.changeuserflag = false;
       return StreamBuilder<List<Users>>(
-          stream: entryProvider.users,
+          stream: userProvider.users,
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(
@@ -232,7 +238,7 @@ class _mainscreenState extends State<mainscreen> {
                 ),
               );
             }
-            entryProvider.changeCurrentUser = snapshot.data[0];
+            userProvider.changeCurrentUser = snapshot.data[0];
             return Bottom_nav(snapshot.data[0].name);
           });
     }

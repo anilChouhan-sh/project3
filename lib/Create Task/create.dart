@@ -1,6 +1,4 @@
 import 'dart:collection';
-import 'dart:ffi';
-import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,8 +8,7 @@ import './Picturecapture.dart';
 import './Newmember.dart';
 import 'CelendaR.dart';
 import 'package:taskarta/Firebase/entry.dart';
-import 'package:taskarta/Firebase/entryprovider.dart';
-import 'package:taskarta/Firebase/firestore.dart';
+import 'package:taskarta/Firebase/Providers/entryprovider.dart';
 import 'package:provider/provider.dart';
 
 class Body extends StatefulWidget {

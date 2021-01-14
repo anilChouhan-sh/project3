@@ -3,11 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:intl/intl.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
 import 'package:provider/provider.dart';
-import 'package:taskarta/Firebase/projectProvider.dart';
+import 'package:taskarta/Firebase/Providers/projectProvider.dart';
 import 'package:taskarta/projects/dialog.dart';
-import 'package:taskarta/projects/projectDetails.dart';
 
 class Create_Project extends StatefulWidget {
   static GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
@@ -35,7 +34,8 @@ class _Create_ProjectState extends State<Create_Project> {
 
   @override
   Widget build(BuildContext context) {
-    final projectProvider = Provider.of<ProjectProvider>(context);
+    final projectProvider =
+        Provider.of<ProjectProvider>(context, listen: false);
     DateTime selectedDate = DateTime.now();
     TimeOfDay selectedTime = TimeOfDay.now();
     String due = DateFormat("yyyy-MM-dd ").format(selectedDate) +
@@ -89,7 +89,7 @@ class _Create_ProjectState extends State<Create_Project> {
                   IconButton(
                     icon: Icon(Icons.add),
                     onPressed: () {
-                      setState(() {});
+                      //setState(() {});
                       showDialog(
                         context: context,
                         builder: (context) {

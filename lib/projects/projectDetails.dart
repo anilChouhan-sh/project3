@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:taskarta/Firebase/entryprovider.dart';
-import 'package:taskarta/Firebase/projectProvider.dart';
+import 'package:taskarta/Firebase/Providers/entryprovider.dart';
+import 'package:taskarta/Firebase/Providers/projectProvider.dart';
+import 'package:taskarta/Firebase/Providers/userProviders.dart';
 import 'package:taskarta/mytask/By_me.dart';
 import 'package:taskarta/mytask/To_me.dart';
 
@@ -14,8 +15,9 @@ class ProjectDetails extends StatefulWidget {
 class _ProjectDetailsState extends State<ProjectDetails> {
   @override
   Widget build(BuildContext context) {
-    final projectprovider = Provider.of<ProjectProvider>(context);
-    final entryprovider = Provider.of<Entryprovider>(context);
+    final projectprovider =
+        Provider.of<ProjectProvider>(context, listen: false);
+    final entryprovider = Provider.of<UserProvider>(context, listen: false);
     return DefaultTabController(
       length: 3,
       child: Scaffold(

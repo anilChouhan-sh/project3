@@ -2,16 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:provider/provider.dart';
-import 'package:taskarta/Firebase/entryprovider.dart';
+import 'package:taskarta/Firebase/Providers/entryprovider.dart';
 
-import 'package:taskarta/Firebase/projectProvider.dart';
+import 'package:taskarta/Firebase/Providers/projectProvider.dart';
+import 'package:taskarta/Firebase/Providers/userProviders.dart';
 import 'package:taskarta/Firebase/projects.dart';
 import 'package:taskarta/projects/create_project.dart';
 import 'package:taskarta/projects/projectDetails.dart';
-import 'package:taskarta/projects/safeus.dart';
+
 import 'package:flutter_tags/flutter_tags.dart';
 import './projectcard.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class Homepage extends StatelessWidget {
   TextEditingController projectname = new TextEditingController();
@@ -19,8 +19,10 @@ class Homepage extends StatelessWidget {
   List<Item> tags = new List<Item>();
   @override
   Widget build(BuildContext context) {
-    final projectProvider = Provider.of<ProjectProvider>(context);
-    final entryProvider = Provider.of<Entryprovider>(context);
+    print('home page rebuild');
+    final projectProvider =
+        Provider.of<ProjectProvider>(context, listen: false);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     return SafeArea(
       child: Scaffold(
           backgroundColor: Colors.white,
@@ -93,7 +95,7 @@ class Homepage extends StatelessWidget {
                             ),
                             children: <TextSpan>[
                               TextSpan(
-                                  text: entryProvider.currentUser.name,
+                                  text: userProvider.currentUser.name,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontStyle: FontStyle.italic)),
@@ -166,7 +168,8 @@ class Homepage extends StatelessWidget {
                                     snapshot.data[index];
                                 projectProvider.changecurr_tasks =
                                     snapshot.data[index].tasks;
-
+                                projectProvider.changepromem =
+                                    snapshot.data[index].members;
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(

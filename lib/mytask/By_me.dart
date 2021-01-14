@@ -1,12 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:taskarta/Firebase/projectProvider.dart';
+import 'package:taskarta/Firebase/Providers/projectProvider.dart';
 import 'package:taskarta/mytask/task.dart';
 import 'package:provider/provider.dart';
 import 'package:taskarta/Create Task/createtask.dart';
-import 'package:taskarta/Firebase/entryprovider.dart';
-import 'package:taskarta/Firebase/entry.dart';
+import 'package:taskarta/Firebase/Providers/entryprovider.dart';
 
 class By_me extends StatelessWidget {
   final userid, name;
@@ -23,8 +22,10 @@ class By_me extends StatelessWidget {
   List tempL = new List();
   @override
   Widget build(BuildContext context) {
-    final entryProvider = Provider.of<Entryprovider>(context);
-    final projectProvider = Provider.of<ProjectProvider>(context);
+    print('by me rebuil');
+    final entryProvider = Provider.of<Entryprovider>(context, listen: false);
+    final projectProvider =
+        Provider.of<ProjectProvider>(context, listen: false);
     Stream y = xyz(entryProvider);
 
     // projectProvider.currentProject.tasks.forEach((z) async {
@@ -49,7 +50,11 @@ class By_me extends StatelessWidget {
             child: Icon(Icons.add),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => CreatTask(userid: userid, name: name)));
+                  builder: (context) => CreatTask(
+                        userid: userid,
+                        name: name,
+                        projectSave: projectProvider.currentProject,
+                      )));
             }),
         body: Consumer<ProjectProvider>(
           builder: (context, projectProvider, _) => ListView.builder(

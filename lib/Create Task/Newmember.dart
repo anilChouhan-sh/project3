@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:provider/provider.dart';
-import 'package:taskarta/Firebase/projectProvider.dart';
-import 'package:taskarta/Firebase/users.dart';
-import 'package:searchable_dropdown/searchable_dropdown.dart';
+import 'package:taskarta/Firebase/Providers/projectProvider.dart';
+
 import 'package:taskarta/projects/dialog.dart';
 
 class AddMember extends StatefulWidget {
@@ -45,10 +44,7 @@ class _AddMemberState extends State<AddMember> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      closed = false;
-      pro.changeuserflag = true;
-    });
+    closed = false;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [

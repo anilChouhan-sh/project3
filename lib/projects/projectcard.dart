@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:taskarta/Firebase/entryprovider.dart';
-import 'package:taskarta/Firebase/projectProvider.dart';
+import 'package:taskarta/Firebase/Providers/entryprovider.dart';
+import 'package:taskarta/Firebase/Providers/projectProvider.dart';
+import 'package:taskarta/Firebase/Providers/userProviders.dart';
 import 'package:taskarta/Firebase/projects.dart';
 
 class Show_Project extends StatelessWidget {
@@ -12,8 +13,9 @@ class Show_Project extends StatelessWidget {
   Show_Project(this.project);
   @override
   Widget build(BuildContext context) {
-    final projectProvider = Provider.of<ProjectProvider>(context);
-    final entryProvider = Provider.of<Entryprovider>(context);
+    final projectProvider =
+        Provider.of<ProjectProvider>(context, listen: false);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Container(
       height: 130,
       child: Card(
@@ -69,9 +71,9 @@ class Show_Project extends StatelessWidget {
                     child: Icon(
                       CupertinoIcons.circle_filled,
                       size: 10,
-                      color: project.created_by == entryProvider.currentUser.ref
+                      color: project.created_by == userProvider.currentUser.ref
                           ? Colors.white
-                          : Colors.teal[700],
+                          : Colors.orange[700],
                     ),
                   ),
                   Container(

@@ -45,11 +45,11 @@ class Firestore_ser {
           .where("userid", whereIn: value)
           .snapshots()
           .map((snapshot) => snapshot.docs
-              .map((doc) => Users.fromJson(doc.data(), doc.reference))
+              .map((doc) => Users.fromJson(doc.data(), ref: doc.reference))
               .toList());
     else
       return _db.collection('user').snapshots().map((snapshot) => snapshot.docs
-          .map((doc) => Users.fromJson(doc.data(), doc.reference))
+          .map((doc) => Users.fromJson(doc.data(), ref: doc.reference))
           .toList());
   }
 
@@ -73,10 +73,15 @@ class Firestore_ser {
           .collection(collection)
           .doc(entry.id)
           .set(entry.toMap(), options);
-    else
+    else if (collection == 'projects')
       return _db
           .collection(collection)
           .doc(entry.projectID)
+          .set(entry.toMap(), options);
+    else
+      return _db
+          .collection(collection)
+          .doc(entry.userid)
           .set(entry.toMap(), options);
   }
 

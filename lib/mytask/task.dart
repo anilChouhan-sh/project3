@@ -4,8 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animations/loading_animations.dart';
-import 'package:taskarta/Firebase/entryprovider.dart';
+import 'package:taskarta/Firebase/Providers/entryprovider.dart';
 import 'package:provider/provider.dart';
+import 'package:taskarta/Firebase/Providers/userProviders.dart';
 import 'package:taskarta/Firebase/users.dart';
 
 class Task extends StatefulWidget {
@@ -20,7 +21,8 @@ class Task extends StatefulWidget {
 class _TaskState extends State<Task> {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<Entryprovider>(context);
+    final entryEntry = Provider.of<Entryprovider>(context, listen: false);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     List<dynamic> nameCondition = new List<dynamic>();
     nameCondition.add(widget.data.userid);
     int len;
@@ -43,16 +45,16 @@ class _TaskState extends State<Task> {
     }
 
     if (widget.flag) {
-      provider.changeusername = widget.data.whom;
-      provider.changeuserflag = false;
+      userProvider.changeusername = widget.data.whom;
+      userProvider.changeuserflag = false;
     } else {
-      provider.changeusername = nameCondition;
-      provider.changeuserflag = false;
+      userProvider.changeusername = nameCondition;
+      userProvider.changeuserflag = false;
     }
     print(widget.data.done.toString());
 
     return StreamBuilder<List<Users>>(
-      stream: provider.users,
+      stream: userProvider.users,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Card(
@@ -129,15 +131,15 @@ class _TaskState extends State<Task> {
                               onChanged: (bool value) {
                                 setState(() {
                                   if (widget.data.done == false) {
-                                    provider.loadAll(widget.data);
-                                    provider.changeid = widget.data.id;
-                                    provider.changedone = true;
-                                    provider.saveEntry();
+                                    entryEntry.loadAll(widget.data);
+                                    entryEntry.changeid = widget.data.id;
+                                    entryEntry.changedone = true;
+                                    entryEntry.saveEntry();
                                   } else {
-                                    provider.loadAll(widget.data);
-                                    provider.changeid = widget.data.id;
-                                    provider.changedone = false;
-                                    provider.saveEntry();
+                                    entryEntry.loadAll(widget.data);
+                                    entryEntry.changeid = widget.data.id;
+                                    entryEntry.changedone = false;
+                                    entryEntry.saveEntry();
                                   }
                                 });
                               },

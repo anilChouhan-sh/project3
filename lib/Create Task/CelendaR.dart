@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:taskarta/Firebase/entryprovider.dart';
+import 'package:taskarta/Firebase/Providers/entryprovider.dart';
 
 class DueDate extends StatefulWidget {
   @override
@@ -16,7 +16,7 @@ class _DueDateState extends State<DueDate> {
 
   @override
   Widget build(BuildContext context) {
-    final entryProvider = Provider.of<Entryprovider>(context);
+    final entryProvider = Provider.of<Entryprovider>(context, listen: false);
     due = DateFormat("yyyy-MM-dd ").format(selectedDate) +
         selectedTime.hour.toString() +
         ":" +
