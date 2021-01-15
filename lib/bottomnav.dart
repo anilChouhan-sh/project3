@@ -56,12 +56,54 @@ class _Bottom_navState extends State<Bottom_nav> {
   int _currentIndex = 1;
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
     return WillPopScope(
       onWillPop: () {
         SystemNavigator.pop();
         return;
       },
       child: Scaffold(
+        drawer: Drawer(
+          child: Consumer<UserProvider>(
+            builder: (context,userProvider,_){
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                DrawerHeader(
+                  child: Text('${userProvider.currentuser[0].name}'),
+                  decoration: BoxDecoration(
+                    color: Colors.teal[700],
+                  ),
+                ),
+                ListTile(
+                  leading: Icon(CupertinoIcons.profile_circled),
+                  title: Text('My Profile'),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: Text('Feedback'),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: Text('Feedback'),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: Text('Feedback'),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
         body: _buildScreens()[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           items: _items(),
