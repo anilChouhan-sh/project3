@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
+import 'package:taskarta/Firebase/Providers/entryprovider.dart';
 import 'package:taskarta/Firebase/Providers/userProviders.dart';
 
 import 'package:taskarta/Firebase/auth.dart';
 
+import 'package:taskarta/mytask/task.dart';
+import 'By_me.dart';
 import 'To_me.dart';
 
 class Mytask extends StatefulWidget {
@@ -27,24 +29,16 @@ class _State extends State<Mytask> {
 
   @override
   Widget build(BuildContext context) {
-    final entryProvider = Provider.of<UserProvider>(context);
+    final entryProvider = Provider.of<Entryprovider>(context);
     return WillPopScope(
       onWillPop: () {
         SystemNavigator.pop();
-        return;
       },
       child: DefaultTabController(
         length: 2,
         child: Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            leading: IconButton(
-              icon: Icon(Icons.logout),
-              onPressed: () async {
-                await auth.signOut();
-                Navigator.pushNamed(context, '/');
-              },
-            ),
             title: Consumer<UserProvider>(builder: (context, entryProvider, _) {
               return Text('${entryProvider.currentUser.name} \' s Tasks');
             }),
