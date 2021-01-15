@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:provider/provider.dart';
 import 'package:taskarta/Firebase/Providers/projectProvider.dart';
+import 'package:taskarta/Firebase/Providers/userProviders.dart';
+import 'package:taskarta/mytask/taskdialog.dart';
 
 import 'package:taskarta/projects/dialog.dart';
 
@@ -44,6 +46,7 @@ class _AddMemberState extends State<AddMember> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
     closed = false;
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -55,9 +58,11 @@ class _AddMemberState extends State<AddMember> {
             showDialog(
               context: context,
               builder: (context) {
+                Provider.of<ContactsProvider>(context, listen: false)
+                    .changeusercontacts = userProvider.currentUser.contacts;
                 return AlertDialog(
                     title: Text("select"),
-                    content: Dialogcontains(widget.tag, tags));
+                    content: TaskDialog(widget.tag, tags));
               },
             );
           },

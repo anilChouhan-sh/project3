@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:provider/provider.dart';
+import 'package:taskarta/Drawer/contacts.dart';
 import 'package:taskarta/Drawer/support.dart';
 import 'package:taskarta/Drawer/Rep.dart';
 import 'package:taskarta/Firebase/Providers/userProviders.dart';
@@ -11,6 +14,7 @@ import 'Rep.dart';
 
 class DrawerScreen extends StatelessWidget {
   Auth auth = new Auth();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -65,7 +69,14 @@ class DrawerScreen extends StatelessWidget {
             leading: Icon(Icons.contact_phone),
             title: Text('My Contacts'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ChangeNotifierProvider(
+                          create: (context) {
+                            return ContactsProvider();
+                          },
+                          child: MyContacts())));
             },
           ),
           ListTile(

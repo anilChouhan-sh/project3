@@ -7,8 +7,6 @@ import 'package:taskarta/Firebase/Providers/userProviders.dart';
 
 import 'package:taskarta/Firebase/auth.dart';
 
-import 'package:taskarta/mytask/task.dart';
-import 'By_me.dart';
 import 'To_me.dart';
 
 class Mytask extends StatefulWidget {

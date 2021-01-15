@@ -2,15 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:provider/provider.dart';
-import 'package:taskarta/Drawer/drawerscreen.dart';
-import 'package:taskarta/Drawer/myprofile.dart';
-import 'package:taskarta/Firebase/Providers/userProviders.dart';
-import 'package:taskarta/Firebase/auth.dart';
 
-import 'package:taskarta/contacts/button.dart';
-import 'package:taskarta/contacts/contacts.dart';
+import 'package:taskarta/Drawer/drawerscreen.dart';
 
 import 'package:taskarta/mytask/home.dart';
 import 'package:taskarta/projects/Homepage.dart';
@@ -24,21 +17,10 @@ class Bottom_nav extends StatefulWidget {
 }
 
 class _Bottom_navState extends State<Bottom_nav> {
-  PersistentTabController _controller;
-  bool _hideNavBar;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = PersistentTabController(initialIndex: 0);
-    _hideNavBar = false;
-  }
-
   List<Widget> _buildScreens() {
     return [
       Homepage(),
       Mytask(userid: FirebaseAuth.instance.currentUser.uid, name: widget.name),
-      MyContacts()
     ];
   }
 
@@ -51,8 +33,6 @@ class _Bottom_navState extends State<Bottom_nav> {
       ),
       BottomNavigationBarItem(
           icon: Icon(CupertinoIcons.table_badge_more), label: 'MyTasks'),
-      BottomNavigationBarItem(
-          icon: Icon(Icons.import_contacts), label: 'MyContacts')
     ];
   }
 
@@ -60,7 +40,6 @@ class _Bottom_navState extends State<Bottom_nav> {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context);
     return WillPopScope(
       onWillPop: () {
         SystemNavigator.pop();

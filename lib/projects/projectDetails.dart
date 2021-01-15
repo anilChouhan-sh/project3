@@ -4,8 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:taskarta/Firebase/Providers/entryprovider.dart';
 import 'package:taskarta/Firebase/Providers/projectProvider.dart';
 import 'package:taskarta/Firebase/Providers/userProviders.dart';
-import 'package:taskarta/mytask/By_me.dart';
+
 import 'package:taskarta/mytask/To_me.dart';
+import 'package:taskarta/projects/alltasks.dart';
 
 class ProjectDetails extends StatefulWidget {
   @override

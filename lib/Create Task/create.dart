@@ -3,6 +3,8 @@ import 'dart:collection';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:taskarta/Firebase/Providers/userProviders.dart';
 import 'package:uuid/uuid.dart';
 import './Picturecapture.dart';
 import './Newmember.dart';
@@ -32,21 +34,21 @@ class _BodyState extends State<Body> {
   final HashMap ids = new HashMap<String, String>();
   var uuid = Uuid();
 
-  @override
-  void initState() {
-    final entryProvider = Provider.of<Entryprovider>(context, listen: false);
-    if (widget.entry != null) {
-      //Edit
-      entryController.text = widget.entry.title;
-      entrywhom.text = widget.entry.whom;
-      entrydes.text = widget.entry.description;
-      entryProvider.loadAll(widget.entry);
-    } else {
-      //Add
-      entryProvider.loadAll(null);
-    }
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   final entryProvider = Provider.of<Entryprovider>(context, listen: false);
+  //   if (widget.entry != null) {
+  //     //Edit
+  //     entryController.text = widget.entry.title;
+  //     entrywhom.text = widget.entry.whom;
+  //     entrydes.text = widget.entry.description;
+  //     entryProvider.loadAll(widget.entry);
+  //   } else {
+  //     //Add
+  //     entryProvider.loadAll(null);
+  //   }
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +187,9 @@ class MemberAndDate extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(top: 20, right: 10, left: 10),
-      child: AddMember(entrywhom, pro, tag),
+      child: ChangeNotifierProvider(
+          create: (context) => ContactsProvider(),
+          child: AddMember(entrywhom, pro, tag)),
     );
   }
 }
