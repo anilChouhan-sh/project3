@@ -55,20 +55,20 @@ class _CreatTaskState extends State<CreatTask> {
 
                   entryProvider.changeuserid = widget.userid;
                   entryProvider.changedone = false;
-                  String id = entryProvider.saveEntry();
-                  if (widget.projectSave != null) {
-                    dynamic ref =
-                        FirebaseFirestore.instance.collection('task').doc(id);
-
-                    projectProvider.currentProject.tasks.add(ref);
-
-                    projectProvider.loadAll(projectProvider.currentProject);
-                    projectProvider.saveProject();
-
-                    projectProvider.changecurr_tasks =
-                        projectProvider.currentProject.tasks;
-                  }
-                  Navigator.pop(context);
+                  Future<String> id = entryProvider.saveEntry();
+                  // if (widget.projectSave != null) {
+                  //   dynamic ref =
+                  //       FirebaseFirestore.instance.collection('task').doc(id);
+                  //
+                  //   projectProvider.currentProject.tasks.add(ref);
+                  //
+                  //   projectProvider.loadAll(projectProvider.currentProject);
+                  //   projectProvider.saveProject();
+                  //
+                  //   projectProvider.changecurr_tasks =
+                  //       projectProvider.currentProject.tasks;
+                  // }
+                 // Navigator.pop(context);
                 }
               });
             },

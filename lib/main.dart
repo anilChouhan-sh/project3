@@ -1,3 +1,7 @@
+import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_datastore/amplify_datastore.dart';
+import 'package:amplify_flutter/amplify.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,12 +19,16 @@ import 'package:taskarta/mytask/home.dart';
 import 'package:provider/provider.dart';
 import 'package:taskarta/rounded_button.dart';
 
+import 'Create Task/createtask.dart';
 import 'Firebase/auth.dart';
 import 'Firebase/Providers/entryprovider.dart';
 import 'Login/Login.dart';
 import 'Login/signup.dart';
 import 'package:taskarta/Firebase/auth.dart';
-
+import 'package:amplify_core/amplify_core.dart';
+import 'amplifyconfiguration.dart';
+import 'models/ModelProvider.dart';
+Amplify amplifyInstance = Amplify();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -28,6 +36,8 @@ void main() async {
 }
 
 class LoginScrn extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     GlobalKey<NavigatorState> f = new GlobalKey();
@@ -65,6 +75,7 @@ class LoginScrn extends StatelessWidget {
 }
 
 class mainscreen extends StatefulWidget {
+
   const mainscreen({
     Key key,
   }) : super(key: key);
@@ -93,6 +104,37 @@ class _mainscreenState extends State<mainscreen> {
 
   void initState() {
     super.initState();
+    _configureAmplify();
+
+  }
+  void _configureAmplify() async {
+    if (!mounted) return;
+
+    // add all of the plugins we are currently using
+    // in our case... just one - Auth
+    //SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      AmplifyAuthCognito authPlugin = AmplifyAuthCognito();
+
+      AmplifyAnalyticsPinpoint amplifyAnalyticsPinpoint =
+      AmplifyAnalyticsPinpoint();
+
+      AmplifyDataStore datastorePlugin =
+      AmplifyDataStore(modelProvider: ModelProvider.instance);
+
+      amplifyInstance.addPlugin(
+          dataStorePlugins: [datastorePlugin],
+          authPlugins: [authPlugin],
+          analyticsPlugins: [amplifyAnalyticsPinpoint]);
+
+      await amplifyInstance.configure(amplifyconfig);
+
+      setState(() {
+        _amplifyConfigured = true;
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   bool obscure = true;
@@ -228,19 +270,20 @@ class _mainscreenState extends State<mainscreen> {
 
       userProvider.changeusername = displayname;
       userProvider.changeuserflag = false;
-      return StreamBuilder<List<Users>>(
-          stream: userProvider.users,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return Center(
-                child: LoadingBumpingLine.circle(
-                  borderColor: Colors.teal[700],
-                ),
-              );
-            }
-            userProvider.changeCurrentUser = snapshot.data[0];
-            return Bottom_nav(snapshot.data[0].name);
-          });
+      return CreatTask();
+      // return StreamBuilder<List<Users>>(
+      //     stream: userProvider.users,
+      //     builder: (context, snapshot) {
+      //       if (!snapshot.hasData) {
+      //         return Center(
+      //           child: LoadingBumpingLine.circle(
+      //             borderColor: Colors.teal[700],
+      //           ),
+      //         );
+      //       }
+      //       userProvider.changeCurrentUser = snapshot.data[0];
+      //       return Bottom_nav(snapshot.data[0].name);
+      //     });
     }
   }
 }

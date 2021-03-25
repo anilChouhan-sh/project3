@@ -1,7 +1,9 @@
+import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:taskarta/Firebase/firestore.dart';
 import 'package:taskarta/Firebase/users.dart';
+import 'package:taskarta/models/Tasks.dart';
 
 import 'package:uuid/uuid.dart';
 
@@ -9,6 +11,7 @@ import 'package:taskarta/Firebase/entry.dart';
 
 class Entryprovider with ChangeNotifier {
   final firestore_ser = Firestore_ser();
+
   var _whom;
   String _title, _description, _date, _userid, _condition, _value, _collection;
 
@@ -108,7 +111,7 @@ class Entryprovider with ChangeNotifier {
     }
   }
 
-  String saveEntry() {
+  Future<String> saveEntry() async {
     String id = uuid.v1();
     if (_id == null) {
       //Add
@@ -121,7 +124,18 @@ class Entryprovider with ChangeNotifier {
           userid: _userid,
           done: _done);
       print(newEntry.title);
-      firestore_ser.setEntry(newEntry, 'task');
+
+      Tasks newTask= Tasks(
+          date: _date,
+          title: _title,
+          id: id,
+          desc: _description,
+          whom: _whom,
+          UserID: _userid,
+          done: _done
+      );
+      await Amplify.DataStore.save(newTask);
+     // firestore_ser.setEntry(newEntry, 'task');
       return id;
     } else {
       //Edit
@@ -133,7 +147,7 @@ class Entryprovider with ChangeNotifier {
           whom: _whom,
           userid: _userid,
           done: _done);
-      firestore_ser.setEntry(updatedEntry, 'task');
+      //firestore_ser.setEntry(updatedEntry, 'task');
     }
     return "";
   }
