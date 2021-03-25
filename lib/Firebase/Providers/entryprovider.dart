@@ -2,7 +2,7 @@ import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:taskarta/Firebase/firestore.dart';
-import 'package:taskarta/Firebase/users.dart';
+
 import 'package:taskarta/models/Tasks.dart';
 
 import 'package:uuid/uuid.dart';
@@ -125,17 +125,16 @@ class Entryprovider with ChangeNotifier {
           done: _done);
       print(newEntry.title);
 
-      Tasks newTask= Tasks(
+      Tasks newTask = Tasks(
           date: _date,
           title: _title,
           id: id,
           desc: _description,
           whom: _whom,
           UserID: _userid,
-          done: _done
-      );
+          done: _done);
       await Amplify.DataStore.save(newTask);
-     // firestore_ser.setEntry(newEntry, 'task');
+      // firestore_ser.setEntry(newEntry, 'task');
       return id;
     } else {
       //Edit

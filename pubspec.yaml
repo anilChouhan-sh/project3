@@ -46,7 +46,7 @@ dependencies:
   modal_bottom_sheet: ^1.0.0+1
 
 # dependencies amplify
-  amplify_core: '<1.0.0'
+  amplify_flutter: '<1.0.0'
   amplify_auth_cognito: '<1.0.0'
   amplify_analytics_pinpoint: '<1.0.0'
   amplify_datastore: '<1.0.0'
@@ -67,8 +67,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - image/
+  #assets:
+  #  - image/
     
 
   # An image asset can refer to one or more resolution-specific "variants", see
