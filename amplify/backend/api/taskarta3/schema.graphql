@@ -1,0 +1,9 @@
+type Tasks @model {
+  id: ID!
+  date:String!
+  desc:String!
+  done:Boolean!
+  title:String!
+  UserID:String!
+  whom:[String]!
+}

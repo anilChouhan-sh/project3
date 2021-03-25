@@ -28,6 +28,7 @@ import 'package:taskarta/Firebase/auth.dart';
 import 'package:amplify_core/amplify_core.dart';
 import 'amplifyconfiguration.dart';
 import 'models/ModelProvider.dart';
+//aa
 Amplify amplifyInstance = Amplify();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
